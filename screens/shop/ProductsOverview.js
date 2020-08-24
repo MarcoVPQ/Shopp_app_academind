@@ -1,8 +1,9 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, HeaderButton } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux'
 import Product from '../../components/shop/Product.component';
 import * as cartActions from '../../store/actions/cart';
+import {MaterialHeaderButtons, Item } from './../../components/ui/headerButton';
 
 const ProductsOverview = ({navigation}) => {
     const products = useSelector(state => state.products.availableProducts);
@@ -23,13 +24,26 @@ const ProductsOverview = ({navigation}) => {
            dispatch(cartActions.addToCart(itemData.item))
          }}
          />
-            )}
-          />
+        )}
+      />
     )
 };
 
-ProductsOverview.navigationOptions = {
-    headerTitle: 'All Products'
+ProductsOverview.navigationOptions = navData => {
+  const { navigation } = navData
+  return {
+    headerTitle: 'All Products',
+    headerRight: (
+      <MaterialHeaderButtons>
+        <Item title="Menu" iconName="shopping-cart" onPress={() => navigation.navigate('Cart')}/>
+      </MaterialHeaderButtons>
+    ),
+      headerLeft: (
+      <MaterialHeaderButtons>
+        <Item title="Cart" iconName="menu" onPress={() => navigation.toggleDrawer()}/>
+      </MaterialHeaderButtons>
+    )
+}
 }
 
 export default ProductsOverview;
